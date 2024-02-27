@@ -16,6 +16,7 @@ class Backend_Api:
         self.app = app
         self.openai_key = os.getenv("OPENAI_API_KEY") or config['openai_key']
         self.openai_api_base = os.getenv("OPENAI_API_BASE") or config['openai_api_base']
+        self.open_api_version = os.getenv("OPENAI_API_VERSION") or config['openai_api_version']
         self.proxy = config['proxy']
         self.routes = {
             '/backend-api/v2/conversation': {
@@ -57,6 +58,8 @@ class Backend_Api:
 
             url = f"{self.openai_api_base}/v1/chat/completions"
 
+            print(f"full url is {url}")
+
             proxies = None
             if self.proxy['enable']:
                 proxies = {
@@ -64,17 +67,22 @@ class Backend_Api:
                     'https': self.proxy['https'],
                 }
 
+            json = {
+                'model'             : request.json['model'], 
+                'messages'          : conversation,
+                'stream'            : True
+            }
+
+            headers = {
+                "api-version": self.open_api_version,
+                "api-key": self.openai_key,
+            }
+
             gpt_resp = post(
                 url     = url,
                 proxies = proxies,
-                headers = {
-                    'Authorization': 'Bearer %s' % self.openai_key
-                }, 
-                json    = {
-                    'model'             : request.json['model'], 
-                    'messages'          : conversation,
-                    'stream'            : True
-                },
+                headers = headers,
+                json    = json,
                 stream  = True
             )
 

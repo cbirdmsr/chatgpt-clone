@@ -1,3 +1,25 @@
+This is a fork of another repo that I got to work with the TnR backend.  The below instructions are from the original repo.  The key difference is that you need to modify the config.json file to contain your backend key and it needs to have the openai_api_version.  Those values are already filled in for the checked in config.json.  You just need to fill in your key from the tnr azure api.
+
+Here's what mine looks like:
+```
+{
+    "site_config": {
+        "host" : "0.0.0.0",
+        "port" : 1338,
+        "debug": false
+    },
+    "openai_key": "oaip_EUWe...",
+    "openai_api_base": "https://tnrllmproxy.azurewebsites.net",
+    "openai_api_version": "2023-12-01-preview",
+    "proxy": {
+        "enable": false,
+        "http": "127.0.0.1:7890",
+        "https": "127.0.0.1:7890"
+    }
+}
+```
+
+
 working again ; ) 
 I am very busy at the moment so I would be very thankful for contributions and PR's
 
